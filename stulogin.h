@@ -1,29 +1,33 @@
-#ifndef PERSONPAGE_H
-#define PERSONPAGE_H
+#ifndef STULOGIN_H
+#define STULOGIN_H
+
+#include "mainwindow.h"
+#include "contentwindow.h"
 
 #include <QMainWindow>
-#include <QDialog>
 
 namespace Ui {
-class personpage;
+class STUlogin;
 }
 
-class personpage : public QMainWindow
+class STUlogin : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit personpage(QWidget *parent = 0);
-    ~personpage();
-    void init();
-    QString pgname;
-
+    explicit STUlogin(QWidget *parent = 0);
+    ~STUlogin();
 
 private slots:
-    void on_pushButton_mycon_clicked();
+    void on_pushButton_zhuce_clicked();
+
+    void on_pushButton_login_clicked();
 
 private:
-    Ui::personpage *ui;
+    Ui::STUlogin *ui;
+    MainWindow *user;
+    ContentWindow *CONTUSERNAME;
+    QString inputName;
 };
 
-#endif // PERSONPAGE_H
+#endif // STULOGIN_H
