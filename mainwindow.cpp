@@ -1,29 +1,78 @@
-#ifndef PERSONPAGE_H
-#define PERSONPAGE_H
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "contentwindow.h"
+#include "personpage.h"
 
-#include <QMainWindow>
-#include <QDialog>
+#include <QPainter>
+#include <QMessageBox>
+#include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
+#include<QSqlQueryModel>
 
-namespace Ui {
-class personpage;
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    connect(ui->actionquti,&QAction::triggered,[=](){
+        this->close();
+    });
+
+    this->setFixedSize(650,700);//设置大小
+    this->setWindowTitle("主页面");//设置标题
+    this->setWindowIcon(QIcon(":/abc.jpg"));//左上角图片
+
 }
 
-class personpage : public QMainWindow
+MainWindow::~MainWindow()
 {
-    Q_OBJECT
+    delete ui;
+}
 
-public:
-    explicit personpage(QWidget *parent = 0);
-    ~personpage();
-    void init();
-    QString pgname;
+void MainWindow::paintEvent(QPaintEvent *)
+{
+    //背景图片
+    QPainter painter (this);
+    QPixmap pix;
+    pix.load(":/def.png");
+    painter.drawPixmap(0,0,this->width(),this->height(),pix);//拉伸图片
 
+}
 
-private slots:
-    void on_pushButton_mycon_clicked();
+void MainWindow::on_pushButton_clicked()
+{
+    ContentWindow *cw=new ContentWindow;
+    cw->con_username=cusername;
+    cw->show();
+}
 
-private:
-    Ui::personpage *ui;
-};
+void MainWindow::on_pushButton_personpage_clicked()
+{
+    personpage *pg=new personpage;
+    pg->pgname=cusername;
+    pg->show();
+    pg->init();
+}
 
-#endif // PERSONPAGE_H
+void MainWindow::init(){
+    qDebug()<<cusername;
+    QString sql_stu;
+    sql_stu="select username as 用户名 ,title as 帖子名,content as 帖子 from content_ ";
+    QSqlQueryModel *modelx=new QSqlQueryModel;
+    modelx->setQuery(sql_stu);
+    ui->tableView->setModel(modelx);
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    qDebug()<<cusername;
+    QString sql_stu;
+    sql_stu="select username as 用户名 ,title as 帖子名,content as 帖子 from content_ ";
+    QSqlQueryModel *modelx=new QSqlQueryModel;
+    modelx->setQuery(sql_stu);
+    ui->tableView->setModel(modelx);
+}
